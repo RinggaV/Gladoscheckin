@@ -198,14 +198,29 @@ def checkin_and_process(
     if checkin_data is None:
         return status_msg, points_gained, remaining_days, remaining_points, exchange_msg
 
+    response_code = checkin_data.get("code")
     response_message = checkin_data.get("message", "无消息字段")
+    normalized_message = response_message.lower()
     points_gained = str(checkin_data.get("points", 0))
 
-    if "Checkin! Got" in response_message:
-        status_msg = f"签到成功，获得 {points_gained} 积分"
-    elif "Checkin Repeats!" in response_message:
+    try:
+        points_gained_is_zero = float(points_gained) == 0
+    except (ValueError, TypeError):
+        points_gained_is_zero = False
+
+    if points_gained_is_zero:
+        checkin_records = checkin_data.get("list") or []
+        if checkin_records:
+            try:
+                points_gained = str(int(float(checkin_records[0].get("change", 0))))
+            except (ValueError, TypeError):
+                points_gained = str(checkin_records[0].get("change", 0))
+
+    if "checkin repeats" in normalized_message:
         status_msg = "重复签到，明天再来"
         points_gained = "0"
+    elif response_code == 0 or "checkin! got" in normalized_message or "observation logged" in normalized_message:
+        status_msg = f"签到成功，获得 {points_gained} 积分"
     else:
         status_msg = f"签到失败: {response_message}"
         points_gained = "0"
