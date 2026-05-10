@@ -3,7 +3,7 @@ name: auto check
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ master, main ]
     paths-ignore:
       - 'README.md'
       - 'imgs/'
@@ -44,6 +44,8 @@ jobs:
         PUSHDEER_SENDKEY: ${{ secrets.PUSHDEER_SENDKEY }}
         GLADOS_COOKIES: ${{ secrets.GLADOS_COOKIES }}
         GLADOS_EXCHANGE_PLAN: ${{ secrets.GLADOS_EXCHANGE_PLAN }}
+        GLADOS_API_BASE_URL: ${{ secrets.GLADOS_API_BASE_URL }}
+        GLADOS_VERBOSE: ${{ secrets.GLADOS_VERBOSE }}
 
     - name: keep alive
       uses: liskin/gh-workflow-keepalive@v1 # using the workflow with default settings

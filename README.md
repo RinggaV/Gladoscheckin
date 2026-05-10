@@ -40,9 +40,17 @@
 | `plan200` | 200 积分 | 30 天 |
 | `plan500` | 500 积分 | 100 天 (默认) |
 
-> 不配置时默认为 `plan500`，即积分达到 500 时自动兑换 100 天
+> 不配置时默认跳过积分兑换；如需自动兑换，请设置 `GLADOS_EXCHANGE_PLAN`。
 
-4. 手机推送（非必须）
+4. 配置 GLaDOS API 域名（非必需）
+
+- 默认使用上游新域名 `https://railgun.info`。如需切回旧域名或指定其他域名，可添加 `GLADOS_API_BASE_URL`，例如 `https://glados.cloud`。
+
+5. 开启详细日志（非必需）
+
+- 添加 `GLADOS_VERBOSE` 并设置为 `true` / `1` / `yes` / `on`，可输出请求与响应内容，便于排查问题。
+
+6. 手机推送（非必须）
 
 - 添加1个`repository secret`，命名为`PUSHDEER_SENDKEY`，其值对应 PushDeer key: ([获取地址](https://www.pushdeer.com/product.html))。
 
@@ -62,6 +70,7 @@
 
 ## 更新日志
 
+- **2026-05**: 同步上游新域名 `railgun.info`，支持通过 `GLADOS_API_BASE_URL` 自定义 API 域名，保留未设置兑换计划时跳过兑换。
 - **2026-01**: 重构代码，添加log输出方便定位，支持新版网址，支持配置积分兑换策略。
 
 
