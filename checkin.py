@@ -216,10 +216,10 @@ def checkin_and_process(
             except (ValueError, TypeError):
                 points_gained = str(checkin_records[0].get("change", 0))
 
-    if "checkin repeats" in normalized_message:
+    if "checkin repeats" in normalized_message or "return tomorrow" in normalized_message:
         status_msg = "重复签到，明天再来"
         points_gained = "0"
-    elif response_code == 0 or "checkin! got" in normalized_message or "observation logged" in normalized_message:
+    elif response_code == 0 or "checkin! got" in normalized_message:
         status_msg = f"签到成功，获得 {points_gained} 积分"
     else:
         status_msg = f"签到失败: {response_message}"
